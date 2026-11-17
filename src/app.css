@@ -1,0 +1,128 @@
+@import '@fontsource/oswald/500.css';
+@import '@fontsource/oswald/600.css';
+@import '@fontsource/oswald/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import 'tailwindcss';
+
+@theme {
+	--font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+	--font-display: 'Oswald', 'Arial Narrow', ui-sans-serif, sans-serif;
+
+	--color-ink: #0b0d0e;
+	--color-panel: #121518;
+	--color-panel-2: #171b1e;
+	--color-line: #23282c;
+	--color-lime: #b7e332;
+	--color-lime-dark: #9ccb22;
+	--color-cream: #f2f2ed;
+	--color-muted: #9aa0a3;
+	--color-gold: #f5c518;
+
+	--animate-marquee: marquee 32s linear infinite;
+}
+
+@keyframes marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@keyframes fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(24px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 96px;
+	overflow-x: clip;
+}
+
+body {
+	overflow-x: clip;
+	background-color: #0b0d0e;
+	color: #f2f2ed;
+	font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+::selection {
+	background: #b7e332;
+	color: #0b0d0e;
+}
+
+/* ---------- Tier 1 motion: reveal action ---------- */
+.motion-ok [data-reveal] {
+	opacity: 0;
+	transform: translateY(22px);
+	transition:
+		opacity 0.5s ease-out,
+		transform 0.5s ease-out;
+	will-change: opacity, transform;
+}
+.motion-ok [data-reveal='fade'] {
+	transform: none;
+}
+.motion-ok [data-reveal='scale'] {
+	transform: scale(0.96);
+}
+.motion-ok [data-reveal='left'] {
+	transform: translateX(-22px);
+}
+.motion-ok [data-reveal='right'] {
+	transform: translateX(22px);
+}
+.motion-ok [data-reveal].is-in {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* ---------- Shared component classes ---------- */
+@layer components {
+	.btn-lime {
+		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-lime px-5 py-3 text-sm font-bold tracking-wide text-ink uppercase transition hover:bg-lime-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime;
+	}
+	.btn-ghost {
+		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-line bg-transparent px-5 py-3 text-sm font-bold tracking-wide text-cream uppercase transition hover:border-lime hover:text-lime focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime;
+	}
+	.card {
+		@apply rounded-xl border border-line bg-panel transition duration-300 hover:-translate-y-1 hover:border-lime/50 hover:shadow-[0_16px_40px_rgba(0,0,0,0.45)];
+	}
+	.input {
+		@apply w-full rounded-md border border-line bg-panel-2 px-4 py-3 text-sm text-cream placeholder:text-muted focus:border-lime focus:outline-none;
+	}
+	.label {
+		@apply mb-1.5 block text-xs font-semibold tracking-wider text-muted uppercase;
+	}
+	.chip {
+		@apply inline-flex min-h-8 items-center rounded-full border border-line bg-panel-2 px-3 text-xs font-semibold text-cream;
+	}
+	.section-title {
+		@apply font-display text-3xl font-semibold tracking-wide text-cream uppercase sm:text-4xl lg:text-5xl;
+	}
+	.eyebrow {
+		@apply text-xs font-bold tracking-[0.25em] text-lime uppercase;
+	}
+}
