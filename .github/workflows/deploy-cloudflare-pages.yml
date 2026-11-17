@@ -5,7 +5,9 @@
 #   CLOUDFLARE_API_TOKEN  — custom token, Account > Cloudflare Pages > Edit
 #   CLOUDFLARE_ACCOUNT_ID — from the Cloudflare dashboard Overview > API section
 #
-# The Cloudflare Pages project "apex-athletics" must exist first
+# The Cloudflare Pages project "apex-athletics-gym" must exist first
+# (apex-athletics.pages.dev is taken by an unrelated sports-equipment site,
+# so this project uses apex-athletics-gym.pages.dev instead).
 # (Dashboard > Workers & Pages > Create > Pages > Direct Upload).
 # Wrangler does not auto-create a Pages project in non-interactive CI.
 
@@ -43,5 +45,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy build --project-name=apex-athletics --branch=main
+          command: pages deploy build --project-name=apex-athletics-gym --branch=main
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
