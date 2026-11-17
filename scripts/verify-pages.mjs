@@ -143,7 +143,8 @@ check(
 	'schedule HIIT filter shows HIIT, hides Strength',
 	await page.evaluate(() => {
 		// Default day is Monday: its only HIIT class is "Lunch Express HIIT".
-		const t = document.body.innerText;
+		// Use textContent: innerText returns CSS-uppercased headings.
+		const t = document.body.textContent || '';
 		return t.includes('Lunch Express HIIT') && !t.includes('Strength Foundations');
 	})
 );
