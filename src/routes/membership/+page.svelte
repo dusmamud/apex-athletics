@@ -113,6 +113,21 @@
 		</div>
 	</div>
 
+	<div class="mx-auto mt-16 grid max-w-5xl gap-5 md:grid-cols-3" use:reveal>
+		<div class="card p-6">
+			<h2 class="font-display text-lg font-semibold tracking-wide text-lime uppercase">Freeze anytime</h2>
+			<p class="mt-2 text-sm leading-relaxed text-muted">Freeze your membership for up to 4 weeks per year at no cost — travel, injury or any other reason. Just tell us 7 days ahead.</p>
+		</div>
+		<div class="card p-6">
+			<h2 class="font-display text-lg font-semibold tracking-wide text-lime uppercase">Cancel with notice</h2>
+			<p class="mt-2 text-sm leading-relaxed text-muted">Monthly plans cancel with 30 days notice — no exit fee, no lock-in. Yearly plans can be cancelled with a pro-rata refund in the first 60 days.</p>
+		</div>
+		<div class="card p-6">
+			<h2 class="font-display text-lg font-semibold tracking-wide text-lime uppercase">No hidden fees</h2>
+			<p class="mt-2 text-sm leading-relaxed text-muted">No joining fee, no card fee, no annual admin fee. The price on the card is the price you pay — that is the whole point.</p>
+		</div>
+	</div>
+
 	<div class="mx-auto mt-12 max-w-5xl text-center" use:reveal>
 		<p class="text-sm text-muted">
 			All plans include locker room access, the APEX app and a fitness assessment on joining.

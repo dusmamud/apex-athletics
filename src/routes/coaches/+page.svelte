@@ -30,7 +30,7 @@
 					width="1000"
 					height="1000"
 					loading="lazy"
-					class="aspect-[4/3] w-full object-cover object-top transition duration-500 group-hover:scale-105"
+					class="aspect-[4/3] w-full object-cover object-center transition duration-500 group-hover:scale-105"
 				/>
 				<div class="p-6">
 					<h2 class="font-display text-2xl font-semibold tracking-wide text-cream uppercase group-hover:text-lime">

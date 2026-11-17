@@ -105,6 +105,9 @@
 					<p class="text-xs text-muted">{band.label}</p>
 				</div>
 			{/each}
+		<div class="mt-8 text-center">
+			<p class="text-sm text-muted">Want your calories and one-rep max too? <a href="/calculators" class="font-semibold text-lime underline underline-offset-4">Open the Fitness Calculators hub</a>.</p>
+		</div>
 		</div>
 	</div>
 </section>

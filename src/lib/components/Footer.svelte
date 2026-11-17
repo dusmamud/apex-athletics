@@ -54,7 +54,7 @@
 		<nav aria-label="Quick links" class="min-w-0">
 			<h3 class="font-display text-sm font-semibold tracking-[0.2em] text-cream uppercase">Quick Links</h3>
 			<ul class="mt-4 space-y-1">
-				{#each [{ href: '/about', label: 'About Us' }, { href: '/schedule', label: 'Class Schedule' }, { href: '/success-stories', label: 'Success Stories' }, { href: '/bmi-calculator', label: 'BMI Calculator' }, { href: '/blog', label: 'Blog' }, { href: '/faq', label: 'FAQ' }, { href: '/join', label: 'Join the Gym' }, { href: '/contact', label: 'Contact' }] as item (item.href)}
+				{#each [{ href: '/about', label: 'About Us' }, { href: '/schedule', label: 'Class Schedule' }, { href: '/classes', label: 'Classes by Goal' }, { href: '/facilities', label: 'Facilities' }, { href: '/gallery', label: 'Photo Gallery' }, { href: '/location', label: 'Location & Hours' }, { href: '/success-stories', label: 'Success Stories' }, { href: '/bmi-calculator', label: 'BMI Calculator' }, { href: '/calculators', label: 'Fitness Calculators' }, { href: '/nutrition', label: 'Nutrition Coaching' }, { href: '/corporate-wellness', label: 'Corporate Wellness' }, { href: '/challenges', label: '30-Day Challenge' }, { href: '/events', label: 'Events' }, { href: '/careers', label: 'Careers' }, { href: '/free-trial', label: 'Free Trial' }, { href: '/book-a-tour', label: 'Book a Tour' }, { href: '/member-login', label: 'Member Login' }, { href: '/blog', label: 'Blog' }, { href: '/faq', label: 'FAQ' }, { href: '/join', label: 'Join the Gym' }, { href: '/contact', label: 'Contact' }] as item (item.href)}
 					<li>
 						<a
 							href={item.href}
@@ -126,6 +126,7 @@
 			<div class="flex items-center gap-4">
 				<a href="/privacy-policy" class="transition hover:text-lime">Privacy Policy</a>
 				<a href="/terms" class="transition hover:text-lime">Terms of Service</a>
+				<a href="/cookie-policy" class="transition hover:text-lime">Cookie Policy</a>
 				<a href="/sitemap" class="transition hover:text-lime">Sitemap</a>
 			</div>
 		</div>

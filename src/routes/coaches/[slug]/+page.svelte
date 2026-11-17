@@ -28,7 +28,7 @@
 				alt="Coach {coach.name}"
 				width="1000"
 				height="1000"
-				class="aspect-[4/3] w-full object-cover object-top lg:aspect-[3/3.4]"
+				class="aspect-[4/3] w-full object-cover object-center lg:aspect-[3/3.4]"
 			/>
 		</div>
 		<div class="min-w-0 lg:col-span-3">
@@ -77,7 +77,7 @@
 		<div class="mt-6 grid gap-5 sm:grid-cols-2">
 			{#each others as other (other.slug)}
 				<a href="/coaches/{other.slug}" class="card group flex min-w-0 items-center gap-4 p-4">
-					<img src={other.image} alt="Coach {other.name}" width="400" height="400" loading="lazy" class="h-20 w-20 shrink-0 rounded-lg object-cover object-top" />
+					<img src={other.image} alt="Coach {other.name}" width="400" height="400" loading="lazy" class="h-20 w-20 shrink-0 rounded-lg object-cover object-center" />
 					<span class="min-w-0">
 						<span class="font-display block text-lg font-semibold tracking-wide text-cream uppercase group-hover:text-lime">{other.name}</span>
 						<span class="block text-sm text-muted">{other.role}</span>

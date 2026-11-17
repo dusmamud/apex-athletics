@@ -463,6 +463,188 @@ export const blogPosts: BlogPost[] = [
 	}
 ];
 
+
+export interface FacilityZone {
+	name: string;
+	image: string;
+	blurb: string;
+	equipment: string[];
+}
+
+export const facilities: FacilityZone[] = [
+	{
+		name: 'Strength Floor',
+		image: u('1571902943202-507ec2618e8f', 1200),
+		blurb: '2,400 sq ft of platforms, racks and plates — built for serious lifting.',
+		equipment: [
+			'8 power racks with safety bars',
+			'6 Olympic lifting platforms',
+			'Dumbbells from 2 to 50 kg',
+			'Plate-loaded machines for every muscle group',
+			'Calibrated competition plates'
+		]
+	},
+	{
+		name: 'Cardio Zone',
+		image: u('1574680178050-55c6a6a96e0a', 1200),
+		blurb: 'Bright, open cardio with views over the training floor.',
+		equipment: [
+			'12 treadmills with personal screens',
+			'8 Concept2 rowers',
+			'6 assault bikes and 4 ski ergs',
+			'Stair climbers and ellipticals',
+			'Heart-rate tracking on every machine'
+		]
+	},
+	{
+		name: 'Functional Turf',
+		image: u('1594381898411-846e7d193883', 1200),
+		blurb: '25 metres of indoor turf for sleds, carries and team training.',
+		equipment: [
+			'25 m sled track',
+			'Battle ropes, kettlebells and sandbags',
+			'Plyo boxes and agility ladders',
+			'TRX suspension trainers',
+			'Open space for small-group sessions'
+		]
+	},
+	{
+		name: 'Recovery Suite',
+		image: u('1544367567-0f2fcb009e0b', 1200),
+		blurb: 'Train hard, recover harder — the room members fight over.',
+		equipment: [
+			'Traditional sauna (seats 8)',
+			'Cold plunge tub',
+			'Massage guns and foam rollers',
+			'Guided stretching and mobility area',
+			'Physio treatment room'
+		]
+	}
+];
+
+export interface GalleryImage {
+	image: string;
+	category: 'Strength' | 'Classes' | 'Cardio' | 'Functional' | 'Mobility' | 'Community';
+	caption: string;
+}
+
+export const galleryImages: GalleryImage[] = [
+	{ image: u('1526506118085-60ce8714f8c5', 1200), category: 'Strength', caption: 'Barbell platform, 6 AM strength class' },
+	{ image: u('1517836357463-d25dfeac3438', 1200), category: 'Classes', caption: 'Dumbbell work in a coached session' },
+	{ image: u('1574680178050-55c6a6a96e0a', 1200), category: 'Cardio', caption: 'The cardio zone at peak hour' },
+	{ image: u('1594381898411-846e7d193883', 1200), category: 'Functional', caption: 'Kettlebell training on the turf' },
+	{ image: u('1544367567-0f2fcb009e0b', 1200), category: 'Mobility', caption: 'Stretch and mobility cool-down' },
+	{ image: u('1517963879433-6ad2b056d712', 1200), category: 'Community', caption: 'Group energy on the training floor' },
+	{ image: u('1571902943202-507ec2618e8f', 1200), category: 'Strength', caption: 'The strength floor' },
+	{ image: u('1581009146145-b5ef050c2e1e', 1200), category: 'Classes', caption: 'One-to-one coaching in action' },
+	{ image: u('1558611848-73f7eb4001a1', 1200), category: 'Strength', caption: 'Free weights, always racked and ready' },
+	{ image: u('1518611012118-696072aa579a', 1200), category: 'Functional', caption: 'Conditioning drills, Saturday circuit' },
+	{ image: u('1532029837206-abbe2b7620e3', 1200), category: 'Mobility', caption: 'Mobility work before the weekend' },
+	{ image: u('1576678927484-cc907957088c', 1200), category: 'Classes', caption: 'HIIT floor, Friday Fight Club' }
+];
+
+export interface ClassGoal {
+	goal: string;
+	blurb: string;
+	programs: string[];
+	image: string;
+}
+
+export const classGoals: ClassGoal[] = [
+	{
+		goal: 'Build Strength',
+		blurb: 'Get measurably stronger with barbell-first programming and technique coaching.',
+		programs: ['strength-training', 'personal-training'],
+		image: u('1526506118085-60ce8714f8c5', 1200)
+	},
+	{
+		goal: 'Lose Fat',
+		blurb: 'Burn hard, keep muscle — HIIT and conditioning paired with a nutrition plan.',
+		programs: ['hiit', 'conditioning'],
+		image: u('1541534741688-6078c6bfb5c5', 1200)
+	},
+	{
+		goal: 'Move Better',
+		blurb: 'Mobility, core and injury-smart training for bodies that need to last.',
+		programs: ['conditioning', 'personal-training'],
+		image: u('1532029837206-abbe2b7620e3', 1200)
+	},
+	{
+		goal: 'Sport Performance',
+		blurb: 'Speed, agility and conditioning for athletes who need results on game day.',
+		programs: ['conditioning', 'strength-training'],
+		image: u('1518611012118-696072aa579a', 1200)
+	}
+];
+
+export interface GymEvent {
+	date: string;
+	title: string;
+	time: string;
+	description: string;
+}
+
+export const gymEvents: GymEvent[] = [
+	{
+		date: 'Sat, Dec 6, 2026',
+		title: 'Winter Strength Testing Day',
+		time: '9:00 AM – 1:00 PM',
+		description: 'Test your squat, bench and deadlift with a coach, get your numbers, and set your winter training targets.'
+	},
+	{
+		date: 'Sat, Dec 13, 2026',
+		title: 'Bring-a-Friend Saturday',
+		time: 'All day',
+		description: 'Every member can bring one friend to train free — classes, open floor and a coach-led induction included.'
+	},
+	{
+		date: 'Sat, Dec 20, 2026',
+		title: '12 Days of Fitness Challenge Kickoff',
+		time: '6:00 AM',
+		description: 'Twelve days, twelve workouts, one leaderboard. Kickoff session on the turf, prizes for finishers.'
+	},
+	{
+		date: 'Sat, Jan 10, 2027',
+		title: 'New Year Open Day',
+		time: '8:00 AM – 2:00 PM',
+		description: 'Free classes all morning, facility tours, nutrition tasters and 7-day trial signups with no card required.'
+	}
+];
+
+export interface OpenRole {
+	title: string;
+	type: string;
+	description: string;
+	requirements: string[];
+}
+
+export const openRoles: OpenRole[] = [
+	{
+		title: 'Strength Coach',
+		type: 'Full-time',
+		description: 'Coach small-group strength classes and one-to-one clients on the strength floor.',
+		requirements: ['CSCS or equivalent certification', '3+ years coaching experience', 'Olympic lifting coaching a plus']
+	},
+	{
+		title: 'HIIT Coach',
+		type: 'Part-time · Evenings',
+		description: 'Run our evening HIIT classes — high energy, tight coaching, great playlist optional.',
+		requirements: ['Group fitness certification', 'Experience coaching intervals', 'Available Tue & Thu evenings']
+	},
+	{
+		title: 'Front Desk & Member Experience',
+		type: 'Full-time',
+		description: 'Be the first face members see — check-ins, trial tours, class bookings and keeping the gym running.',
+		requirements: ['Great with people, calm under pressure', 'Weekend availability', 'Gym experience preferred, not required']
+	},
+	{
+		title: 'Nutrition Coach',
+		type: 'Contract',
+		description: 'Deliver nutrition starter plans and check-ins for Premium and Elite members.',
+		requirements: ['Precision Nutrition or equivalent', 'Experience with active clients', '2 days a week on site']
+	}
+];
+
 export const allRoutes = [
 	'/',
 	'/programs',
@@ -486,6 +668,20 @@ export const allRoutes = [
 	'/blog/progressive-overload-explained',
 	'/blog/hiit-vs-steady-cardio',
 	'/blog/nutrition-basics-for-training',
+	'/facilities',
+	'/gallery',
+	'/classes',
+	'/location',
+	'/corporate-wellness',
+	'/nutrition',
+	'/challenges',
+	'/events',
+	'/careers',
+	'/member-login',
+	'/free-trial',
+	'/book-a-tour',
+	'/calculators',
+	'/cookie-policy',
 	'/privacy-policy',
 	'/terms',
 	'/sitemap'

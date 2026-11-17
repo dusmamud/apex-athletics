@@ -1,11 +1,22 @@
 <script lang="ts">
-	import { ArrowRight, ArrowUpRight, Play, Star, TrendingUp } from '@lucide/svelte';
+	import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Play, Star, TrendingUp } from '@lucide/svelte';
 	import { reveal } from '#lib/reveal';
 	import CountUp from '#lib/components/CountUp.svelte';
 	import PlanCard from '#lib/components/PlanCard.svelte';
 	import { coaches, IMAGES, plans, programs, testimonials } from '#lib/data/gym';
 
 	const marquee = ['Strength', 'HIIT', 'Conditioning', 'Community', 'Discipline', 'Results'];
+
+	// Testimonial slider: auto-advances every 5s, pauses on hover/focus.
+	let tIndex = $state(0);
+	let tPaused = $state(false);
+	$effect(() => {
+		if (tPaused) return;
+		const id = setInterval(() => {
+			tIndex = (tIndex + 1) % testimonials.length;
+		}, 5000);
+		return () => clearInterval(id);
+	});
 </script>
 
 <svelte:head>
@@ -26,7 +37,7 @@
 				width="1600"
 				height="1067"
 				fetchpriority="high"
-				class="aspect-[4/3] w-full object-cover object-top sm:aspect-[16/11] lg:aspect-[4/3.4]"
+				class="ken-burns aspect-[4/3] w-full object-cover object-top sm:aspect-[16/11] lg:aspect-[4/3.4]"
 			/>
 			<div class="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent"></div>
 			<div
@@ -48,13 +59,22 @@
 				community that shows up — so you do too.
 			</p>
 			<div class="mt-7 flex flex-wrap items-center gap-3">
-				<a href="/membership" class="btn-lime">
-					Explore Memberships <ArrowRight class="h-4 w-4" />
+				<a href="/free-trial" class="btn-lime">
+					7 Days Free — Start Now <ArrowRight class="h-4 w-4" />
 				</a>
+				<a href="/membership" class="btn-ghost">Explore Memberships</a>
 				<a href="/success-stories" class="btn-ghost">
 					<Play class="h-4 w-4 fill-current" /> Watch Video
 				</a>
 			</div>
+			<p class="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+				<span class="flex gap-0.5" aria-label="Rated 4.9 out of 5 stars">
+					{#each Array(5) as _, s (s)}
+						<Star class="h-4 w-4 fill-gold text-gold" />
+					{/each}
+				</span>
+				<strong class="text-cream">4.9 on Google</strong> · 2,400+ members · No card required for the trial
+			</p>
 
 			<dl class="mt-10 grid grid-cols-2 gap-4 border-t border-line pt-6 sm:grid-cols-4">
 				<div class="min-w-0">
@@ -111,7 +131,7 @@
 	</div>
 	<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 		{#each programs as program, i (program.slug)}
-			<article class="card flex min-w-0 flex-col overflow-hidden" use:reveal={{ delay: i * 70 }}>
+			<article class="card flex min-w-0 flex-col overflow-hidden" use:reveal={{ delay: i * 90 }}>
 				<div class="overflow-hidden">
 					<img
 						src={program.image}
@@ -119,7 +139,7 @@
 						width="1200"
 						height="800"
 						loading="lazy"
-						class="aspect-[3/2] w-full object-cover transition duration-500 hover:scale-105"
+						class="aspect-[3/2] w-full object-cover transition duration-300 hover:scale-105"
 					/>
 				</div>
 				<div class="flex flex-1 flex-col p-5">
@@ -146,6 +166,17 @@
 	</div>
 </section>
 
+<!-- ================= TRIAL BANNER ================= -->
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+	<div class="card flex flex-col items-center justify-between gap-4 p-6 text-center sm:flex-row sm:p-7 sm:text-left" use:reveal>
+		<div class="min-w-0">
+			<h2 class="font-display text-2xl font-semibold tracking-wide text-cream uppercase">Not sure which program fits?</h2>
+			<p class="mt-1 text-sm text-muted">Try them all for 7 days free — a coach will help you pick after your assessment.</p>
+		</div>
+		<a href="/free-trial" class="btn-lime shrink-0">Claim 7 Days Free</a>
+	</div>
+</section>
+
 <!-- ================= COACHES ================= -->
 <section class="border-y border-line bg-panel/60">
 	<div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
@@ -161,7 +192,7 @@
 				<a
 					href="/coaches/{coach.slug}"
 					class="card group block min-w-0 overflow-hidden"
-					use:reveal={{ delay: i * 70 }}
+					use:reveal={{ delay: i * 90 }}
 					aria-label="Meet {coach.name}, {coach.role}"
 				>
 					<div class="overflow-hidden">
@@ -171,7 +202,7 @@
 							width="1000"
 							height="1000"
 							loading="lazy"
-							class="aspect-[4/3] w-full object-cover object-top transition duration-500 group-hover:scale-105"
+							class="aspect-[4/3] w-full object-cover object-center transition duration-300 group-hover:scale-105"
 						/>
 					</div>
 					<div class="p-5">
@@ -224,7 +255,19 @@
 					</p>
 				</div>
 			</div>
-			<a href="/success-stories" class="btn-lime mt-7">See Success Stories</a>
+			<div class="mt-6 space-y-3" use:reveal>
+				{#each [{ label: 'Strength gain', pct: 82, value: '+24%' }, { label: 'Fat loss', pct: 64, value: '−6 kg' }, { label: 'Conditioning', pct: 74, value: '+31%' }] as bar (bar.label)}
+					<div>
+						<div class="flex items-center justify-between text-xs"><span class="font-semibold text-cream">{bar.label}</span><span class="font-bold text-lime">{bar.value}</span></div>
+						<div class="mt-1 h-2 overflow-hidden rounded-full bg-panel-2"><div class="h-full rounded-full bg-lime transition-[width] duration-300" style="width: {bar.pct}%"></div></div>
+					</div>
+				{/each}
+				<p class="text-xs text-muted">Average member progress, first 12 weeks (2026 member data).</p>
+			</div>
+			<div class="mt-7 flex flex-wrap gap-3">
+				<a href="/success-stories" class="btn-lime">See Success Stories</a>
+				<a href="/free-trial" class="btn-ghost">Try It Free for 7 Days</a>
+			</div>
 		</div>
 	</div>
 </section>
@@ -241,7 +284,7 @@
 		</div>
 		<div class="mx-auto mt-12 grid max-w-5xl gap-6 lg:grid-cols-3">
 			{#each plans as plan, i (plan.name)}
-				<div use:reveal={{ delay: i * 70 }} class="min-w-0">
+				<div use:reveal={{ delay: i * 90 }} class="min-w-0">
 					<PlanCard {plan} billing="monthly" />
 				</div>
 			{/each}
@@ -258,27 +301,67 @@
 		<p class="eyebrow">Members say it best</p>
 		<h2 class="section-title mt-2">Member Testimonials</h2>
 	</div>
-	<div class="mt-10 grid gap-5 md:grid-cols-3">
-		{#each testimonials as t, i (t.name)}
-			<figure class="card min-w-0 p-6" use:reveal={{ delay: i * 70 }}>
+	<div
+		class="card mx-auto mt-10 max-w-3xl p-6 sm:p-8"
+		role="region"
+		aria-label="Member testimonials"
+		use:reveal
+		onmouseenter={() => (tPaused = true)}
+		onmouseleave={() => (tPaused = false)}
+	>
+		{#key tIndex}
+			<figure>
 				<div class="flex gap-0.5" aria-label="5 out of 5 stars">
 					{#each Array(5) as _, s (s)}
 						<Star class="h-4 w-4 fill-gold text-gold" />
 					{/each}
 				</div>
-				<blockquote class="mt-4 text-sm leading-relaxed text-cream/90">“{t.quote}”</blockquote>
+				<blockquote class="mt-4 text-base leading-relaxed text-cream/90 sm:text-lg">“{testimonials[tIndex].quote}”</blockquote>
 				<figcaption class="mt-5 flex items-center gap-3">
 					<span
 						class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-lime text-sm font-bold text-ink"
-						aria-hidden="true">{t.initials}</span
+						aria-hidden="true">{testimonials[tIndex].initials}</span
 					>
 					<span class="min-w-0">
-						<span class="block text-sm font-semibold text-cream">{t.name}</span>
-						<span class="block text-xs text-muted">{t.detail} · {t.program}</span>
+						<span class="block text-sm font-semibold text-cream">{testimonials[tIndex].name}</span>
+						<span class="block text-xs text-muted">{testimonials[tIndex].detail} · {testimonials[tIndex].program}</span>
 					</span>
 				</figcaption>
 			</figure>
-		{/each}
+		{/key}
+		<div class="mt-6 flex items-center justify-between gap-4">
+			<div class="flex gap-2" role="group" aria-label="Choose testimonial">
+				{#each testimonials as _, i (i)}
+					<button
+						type="button"
+						aria-label="Show testimonial {i + 1}"
+						aria-pressed={tIndex === i}
+						onclick={() => (tIndex = i)}
+						class="flex h-11 w-11 items-center justify-center"
+					>
+						<span class="h-2.5 rounded-full transition-all duration-200 {tIndex === i ? 'w-7 bg-lime' : 'w-2.5 bg-line'}"></span>
+					</button>
+				{/each}
+			</div>
+			<div class="flex gap-2">
+				<button
+					type="button"
+					aria-label="Previous testimonial"
+					onclick={() => (tIndex = (tIndex - 1 + testimonials.length) % testimonials.length)}
+					class="flex h-11 w-11 items-center justify-center rounded-md border border-line text-cream transition hover:border-lime hover:text-lime"
+				>
+					<ChevronLeft class="h-5 w-5" />
+				</button>
+				<button
+					type="button"
+					aria-label="Next testimonial"
+					onclick={() => (tIndex = (tIndex + 1) % testimonials.length)}
+					class="flex h-11 w-11 items-center justify-center rounded-md border border-line text-cream transition hover:border-lime hover:text-lime"
+				>
+					<ChevronRight class="h-5 w-5" />
+				</button>
+			</div>
+		</div>
 	</div>
 </section>
 

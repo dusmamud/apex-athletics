@@ -5,9 +5,10 @@
 		{ title: 'Main pages', routes: ['/', '/about', '/contact', '/join', '/faq', '/sitemap'] },
 		{ title: 'Programs', routes: allRoutes.filter((r) => r.startsWith('/programs')) },
 		{ title: 'Coaches', routes: allRoutes.filter((r) => r.startsWith('/coaches')) },
-		{ title: 'Training & tools', routes: ['/membership', '/schedule', '/success-stories', '/bmi-calculator'] },
+		{ title: 'Training & tools', routes: ['/membership', '/schedule', '/classes', '/facilities', '/gallery', '/success-stories', '/bmi-calculator', '/calculators', '/nutrition', '/challenges', '/events'] },
+		{ title: 'Visit & join', routes: ['/free-trial', '/book-a-tour', '/location', '/corporate-wellness', '/careers', '/member-login'] },
 		{ title: 'Blog', routes: allRoutes.filter((r) => r.startsWith('/blog')) },
-		{ title: 'Legal', routes: ['/privacy-policy', '/terms'] }
+		{ title: 'Legal', routes: ['/privacy-policy', '/terms', '/cookie-policy'] }
 	];
 </script>
 

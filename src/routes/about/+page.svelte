@@ -106,7 +106,7 @@
 		<div class="mt-10 grid gap-5 sm:grid-cols-3">
 			{#each coaches as coach (coach.slug)}
 				<a href="/coaches/{coach.slug}" class="card group block min-w-0 overflow-hidden">
-					<img src={coach.image} alt="Coach {coach.name}" width="1000" height="1000" loading="lazy" class="aspect-[4/3] w-full object-cover object-top transition duration-500 group-hover:scale-105" />
+					<img src={coach.image} alt="Coach {coach.name}" width="1000" height="1000" loading="lazy" class="aspect-[4/3] w-full object-cover object-center transition duration-500 group-hover:scale-105" />
 					<div class="p-5">
 						<h3 class="font-display text-xl font-semibold tracking-wide text-cream uppercase group-hover:text-lime">{coach.name}</h3>
 						<p class="mt-1 text-sm text-lime">{coach.role}</p>

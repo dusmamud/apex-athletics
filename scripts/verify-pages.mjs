@@ -36,6 +36,20 @@ const routes = [
 	'/blog/progressive-overload-explained',
 	'/blog/hiit-vs-steady-cardio',
 	'/blog/nutrition-basics-for-training',
+	'/facilities',
+	'/gallery',
+	'/classes',
+	'/location',
+	'/corporate-wellness',
+	'/nutrition',
+	'/challenges',
+	'/events',
+	'/careers',
+	'/member-login',
+	'/free-trial',
+	'/book-a-tour',
+	'/calculators',
+	'/cookie-policy',
 	'/privacy-policy',
 	'/terms',
 	'/sitemap'
@@ -54,9 +68,9 @@ const scrollThrough = async () => {
 		await new Promise((resolve) => {
 			let y = 0;
 			const step = () => {
-				y += 500;
+				y += 350;
 				window.scrollTo(0, y);
-				if (y < document.body.scrollHeight) setTimeout(step, 60);
+				if (y < document.body.scrollHeight) setTimeout(step, 100);
 				else resolve();
 			};
 			step();
@@ -95,7 +109,7 @@ const sitemapCount = await page.evaluate(async () => {
 	const t = await (await fetch('/sitemap.xml')).text();
 	return (t.match(/<loc>/g) || []).length;
 });
-check('sitemap.xml lists 25 URLs', sitemapCount === 25, `got ${sitemapCount}`);
+check('sitemap.xml lists 39 URLs', sitemapCount === 39, `got ${sitemapCount}`);
 
 // ---------- tap targets >= 44px on mobile ----------
 await page.setViewportSize({ width: 390, height: 844 });
@@ -142,10 +156,13 @@ await page.waitForTimeout(400);
 check(
 	'schedule HIIT filter shows HIIT, hides Strength',
 	await page.evaluate(() => {
-		// Default day is Monday: its only HIIT class is "Lunch Express HIIT".
-		// Use textContent: innerText returns CSS-uppercased headings.
-		const t = document.body.textContent || '';
-		return t.includes('Lunch Express HIIT') && !t.includes('Strength Foundations');
+		// Day-agnostic: whatever day it is, filtered cards must all be HIIT classes.
+		const names = [...document.querySelectorAll('article h2')].map((h) => h.textContent || '');
+		return (
+			names.length > 0 &&
+			names.every((n) => /HIIT/i.test(n)) &&
+			!names.some((n) => /Strength|Conditioning|Core/i.test(n))
+		);
 	})
 );
 
@@ -213,10 +230,142 @@ check(
 	await page.evaluate(() => /message received/i.test(document.body.innerText))
 );
 
+
+// ---------- schedule booking ----------
+await page.goto(BASE + '/schedule', { waitUntil: 'networkidle' });
+await page.waitForTimeout(600);
+check(
+	'schedule shows Today highlight',
+	await page.evaluate(() => document.body.textContent.includes("Showing today's classes"))
+);
+await page.click('button:has-text("Book This Class") >> nth=0');
+await page.waitForTimeout(1000);
+await page.fill('input#bk-name', 'Test Booker');
+await page.fill('input#bk-email', 'booker@example.com');
+await page.click('button:has-text("Confirm Booking")');
+await page.waitForFunction(() => document.body.innerText.includes('You are booked in'), { timeout: 8000 }).catch(() => {});
+check(
+	'schedule booking confirms + saves to localStorage',
+	await page.evaluate(() => {
+		const saved = JSON.parse(localStorage.getItem('apex-bookings') ?? '[]');
+		return document.body.innerText.includes('You are booked in') && saved.length >= 1 && saved[0].email === 'booker@example.com';
+	})
+);
+
+// ---------- calculators: TDEE + 1RM ----------
+await page.goto(BASE + '/calculators', { waitUntil: 'networkidle' });
+await page.waitForTimeout(600);
+await page.click('button:has-text("Calories (TDEE)")');
+await page.waitForTimeout(400);
+check(
+	'TDEE tab shows calorie targets',
+	await page.evaluate(() => document.body.textContent.includes('Maintain') && /\d{3,4} kcal/.test(document.body.textContent))
+);
+await page.click('button:has-text("One-Rep Max")');
+await page.waitForTimeout(400);
+check(
+	'1RM tab shows estimated max',
+	await page.evaluate(() => document.body.textContent.includes('Estimated 1RM'))
+);
+
+// ---------- member login ----------
+await page.goto(BASE + '/member-login', { waitUntil: 'networkidle' });
+await page.fill('input#ml-email', 'wrong@example.com');
+await page.fill('input#ml-pass', 'nope');
+await page.click('button[type="submit"]');
+await page.waitForTimeout(400);
+check(
+	'member login rejects wrong credentials',
+	await page.evaluate(() => document.body.innerText.includes('do not match'))
+);
+await page.fill('input#ml-email', 'demo@apexathletics.com');
+await page.fill('input#ml-pass', 'demo1234');
+await page.click('button[type="submit"]');
+await page.waitForTimeout(600);
+check(
+	'member login demo account opens dashboard with booking',
+	await page.evaluate(() => {
+		const saved = JSON.parse(localStorage.getItem('apex-bookings') ?? '[]');
+		return (
+			document.body.innerText.includes('Your Dashboard') &&
+			saved.length >= 1 &&
+			document.body.innerText.includes(saved[0].className)
+		);
+	})
+);
+
+// ---------- gallery filter + lightbox ----------
+await page.goto(BASE + '/gallery', { waitUntil: 'networkidle' });
+await page.waitForTimeout(600);
+await page.click('button:has-text("Strength") >> nth=0');
+await page.waitForTimeout(400);
+check(
+	'gallery Strength filter narrows grid',
+	await page.evaluate(() => {
+		const t = document.body.textContent || '';
+		return t.includes('Barbell platform') && !t.includes('Treadmill zone');
+	})
+);
+await page.click('button[aria-label^="View photo:"] >> nth=0');
+await page.waitForTimeout(400);
+check(
+	'gallery lightbox opens with caption + counter',
+	await page.evaluate(() => !!document.querySelector('[role="dialog"][aria-label="Photo viewer"]') && document.body.textContent.includes('of 12'))
+);
+await page.keyboard.press('Escape');
+await page.waitForTimeout(300);
+
+// ---------- testimonial slider ----------
+await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+await page.waitForTimeout(700);
+const firstQuote = await page.evaluate(() => document.querySelector('blockquote')?.textContent?.slice(0, 30));
+await page.click('button[aria-label="Next testimonial"]');
+await page.waitForTimeout(400);
+const secondQuote = await page.evaluate(() => document.querySelector('blockquote')?.textContent?.slice(0, 30));
+check('testimonial slider advances on next', firstQuote !== secondQuote, `${firstQuote} -> ${secondQuote}`);
+
+// ---------- free trial form ----------
+await page.goto(BASE + '/free-trial', { waitUntil: 'networkidle' });
+await page.fill('input#ft-name', 'Trial Person');
+await page.fill('input#ft-email', 'trial@example.com');
+await page.click('button[type="submit"]');
+await page.waitForTimeout(600);
+check(
+	'free trial valid submit shows success',
+	await page.evaluate(() => /trial is booked/i.test(document.body.innerText))
+);
+
+// ---------- sticky mobile CTA bar ----------
+await page.setViewportSize({ width: 390, height: 844 });
+await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+await page.waitForTimeout(600);
+check(
+	'sticky mobile CTA bar visible with Join + Call',
+	await page.evaluate(() => {
+		const nav = document.querySelector('nav[aria-label="Quick actions"]');
+		if (!nav) return false;
+		const r = nav.getBoundingClientRect();
+		return r.height >= 44 && nav.textContent.includes('7 Days Free') && nav.textContent.includes('Call the Gym');
+	})
+);
+await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+await page.waitForTimeout(700);
+check(
+	'footer legal links visible above sticky bar',
+	await page.evaluate(() => {
+		const link = [...document.querySelectorAll('footer a')].find((a) => a.textContent.includes('Cookie Policy'));
+		if (!link) return false;
+		const r = link.getBoundingClientRect();
+		const bar = document.querySelector('nav[aria-label="Quick actions"]').getBoundingClientRect();
+		return r.bottom <= bar.top;
+	})
+);
+
 // ---------- reveals fire after scroll ----------
 await page.goto(BASE + '/', { waitUntil: 'networkidle' });
 await page.waitForTimeout(700);
 await scrollThrough();
+await page.waitForTimeout(1500);
 check(
 	'home reveals fire after scroll',
 	await page.evaluate(() => {
@@ -240,6 +389,19 @@ await page.screenshot({ path: '/home/hatch/workspace/apex-athletics/verify/home-
 await page.goto(BASE + '/programs', { waitUntil: 'networkidle' });
 await scrollThrough();
 await page.screenshot({ path: '/home/hatch/workspace/apex-athletics/verify/programs-390.png', fullPage: true });
+await page.goto(BASE + '/coaches', { waitUntil: 'networkidle' });
+await scrollThrough();
+await page.screenshot({ path: '/home/hatch/workspace/apex-athletics/verify/coaches-390.png', fullPage: true });
+await page.goto(BASE + '/schedule', { waitUntil: 'networkidle' });
+await scrollThrough();
+await page.screenshot({ path: '/home/hatch/workspace/apex-athletics/verify/schedule-390.png', fullPage: true });
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.goto(BASE + '/coaches', { waitUntil: 'networkidle' });
+await scrollThrough();
+await page.screenshot({ path: '/home/hatch/workspace/apex-athletics/verify/coaches-1440.png', fullPage: true });
+await page.goto(BASE + '/schedule', { waitUntil: 'networkidle' });
+await scrollThrough();
+await page.screenshot({ path: '/home/hatch/workspace/apex-athletics/verify/schedule-1440.png', fullPage: true });
 
 const realErrors = errors.filter((e) => !e.includes('ERR_'));
 check('zero page errors across all routes', realErrors.length === 0, realErrors.slice(0, 3).join(' | '));

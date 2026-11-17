@@ -11,10 +11,13 @@
 
 	let open = $state(false);
 	let scrolled = $state(false);
+	let progress = $state(0);
 
 	$effect(() => {
 		const onScroll = () => {
 			scrolled = window.scrollY > 8;
+			const max = document.documentElement.scrollHeight - window.innerHeight;
+			progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
 		};
 		onScroll();
 		window.addEventListener('scroll', onScroll, { passive: true });
@@ -22,6 +25,7 @@
 	});
 </script>
 
+<div class="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-lime" style="transform: scaleX({progress})" aria-hidden="true"></div>
 <header
 	class="sticky top-0 z-50 border-b bg-ink/95 backdrop-blur transition-shadow duration-300 {scrolled
 		? 'border-line shadow-[0_8px_30px_rgba(0,0,0,0.5)]'
@@ -41,7 +45,7 @@
 			{#each links as link (link.href)}
 				<a
 					href={link.href}
-					class="rounded-md px-3 py-2 text-sm font-medium text-cream/85 transition hover:bg-panel hover:text-lime"
+					class="nav-link rounded-md px-3 py-2 text-sm font-medium text-cream/85 transition duration-150 hover:bg-panel hover:text-lime"
 				>
 					{link.label}
 				</a>
@@ -77,6 +81,8 @@
 					{link.label}
 				</a>
 			{/each}
+			<a href="/classes" onclick={() => (open = false)} class="flex min-h-12 items-center rounded-md px-3 text-base font-medium text-cream transition hover:bg-panel hover:text-lime">Classes by Goal</a>
+			<a href="/free-trial" onclick={() => (open = false)} class="flex min-h-12 items-center rounded-md px-3 text-base font-medium text-cream transition hover:bg-panel hover:text-lime">Free Trial</a>
 			<a href="/join" onclick={() => (open = false)} class="btn-lime mt-3 w-full">Join the Gym</a>
 			<a href="/contact" onclick={() => (open = false)} class="btn-ghost mt-2 w-full">Contact Us</a>
 		</nav>
