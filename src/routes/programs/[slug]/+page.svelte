@@ -2,6 +2,7 @@
 	import { Check, Clock, Flame, Signal, User } from '@lucide/svelte';
 	import { reveal } from '#lib/reveal';
 	import type { PageData } from './$types';
+	import { imgSrcSet } from '#lib/img';
 
 	let { data }: { data: PageData } = $props();
 	const program = $derived(data.program);
@@ -24,9 +25,12 @@
 		<div class="min-w-0 overflow-hidden rounded-2xl border border-line">
 			<img
 				src={program.image}
+				srcset={imgSrcSet(program.image, [640, 960, 1200])}
+				sizes="(max-width: 1023px) 100vw, 50vw"
 				alt="{program.name} at APEX ATHLETICS"
 				width="1200"
 				height="800"
+				fetchpriority="high"
 				class="aspect-[3/2] w-full object-cover"
 			/>
 		</div>
@@ -90,7 +94,16 @@
 		<div class="mt-6 grid gap-5 sm:grid-cols-3">
 			{#each related as rel (rel.slug)}
 				<a href="/programs/{rel.slug}" class="card group block min-w-0 overflow-hidden">
-					<img src={rel.image} alt={rel.name} width="1200" height="800" loading="lazy" class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:scale-105" />
+					<img
+						src={rel.image}
+						srcset={imgSrcSet(rel.image, [480, 800, 1200])}
+						sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+						alt={rel.name}
+						width="1200"
+						height="800"
+						loading="lazy"
+						class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:scale-105"
+					/>
 					<div class="p-5">
 						<h3 class="font-display text-lg font-semibold tracking-wide text-cream uppercase group-hover:text-lime">{rel.name}</h3>
 						<p class="mt-1 text-sm text-muted">{rel.tagline}</p>

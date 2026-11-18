@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { reveal } from '#lib/reveal';
 	import { coaches } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 </script>
 
 <svelte:head>
@@ -26,6 +27,8 @@
 			<a href="/coaches/{coach.slug}" class="card group block min-w-0 overflow-hidden" use:reveal={{ delay: i * 70 }}>
 				<img
 					src={coach.image}
+					srcset={imgSrcSet(coach.image, [480, 800, 1000])}
+					sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
 					alt="Coach {coach.name}"
 					width="1000"
 					height="1000"

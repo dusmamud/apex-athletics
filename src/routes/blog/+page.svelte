@@ -2,6 +2,7 @@
 	import { Clock } from '@lucide/svelte';
 	import { reveal } from '#lib/reveal';
 	import { blogPosts } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 </script>
 
 <svelte:head>
@@ -22,7 +23,16 @@
 	<div class="mt-10 grid gap-6 md:grid-cols-3">
 		{#each blogPosts as post, i (post.slug)}
 			<a href="/blog/{post.slug}" class="card group block min-w-0 overflow-hidden" use:reveal={{ delay: i * 70 }}>
-				<img src={post.image} alt={post.title} width="1200" height="800" loading="lazy" class="aspect-[16/9] w-full object-cover transition duration-500 group-hover:scale-105" />
+				<img
+					src={post.image}
+					srcset={imgSrcSet(post.image, [480, 800, 1200])}
+					sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+					alt={post.title}
+					width="1200"
+					height="800"
+					loading="lazy"
+					class="aspect-[16/9] w-full object-cover transition duration-500 group-hover:scale-105"
+				/>
 				<div class="p-6">
 					<div class="flex items-center gap-3 text-xs text-muted">
 						<span class="font-semibold text-lime uppercase">{post.category}</span>

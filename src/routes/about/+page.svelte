@@ -3,6 +3,7 @@
 	import { reveal } from '#lib/reveal';
 	import CountUp from '#lib/components/CountUp.svelte';
 	import { coaches, IMAGES } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 
 	const values = [
 		{
@@ -58,6 +59,8 @@
 		<div class="min-w-0 overflow-hidden rounded-2xl border border-line" use:reveal={{ variant: 'right' }}>
 			<img
 				src={IMAGES.about}
+				srcset={imgSrcSet(IMAGES.about, [640, 960, 1400])}
+				sizes="(max-width: 1023px) 100vw, 50vw"
 				alt="Inside the APEX ATHLETICS gym"
 				width="1400"
 				height="933"
@@ -106,7 +109,16 @@
 		<div class="mt-10 grid gap-5 sm:grid-cols-3">
 			{#each coaches as coach (coach.slug)}
 				<a href="/coaches/{coach.slug}" class="card group block min-w-0 overflow-hidden">
-					<img src={coach.image} alt="Coach {coach.name}" width="1000" height="1000" loading="lazy" class="aspect-[4/3] w-full object-cover object-center transition duration-500 group-hover:scale-105" />
+					<img
+						src={coach.image}
+						srcset={imgSrcSet(coach.image, [480, 800, 1000])}
+						sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+						alt="Coach {coach.name}"
+						width="1000"
+						height="1000"
+						loading="lazy"
+						class="aspect-[4/3] w-full object-cover object-center transition duration-500 group-hover:scale-105"
+					/>
 					<div class="p-5">
 						<h3 class="font-display text-xl font-semibold tracking-wide text-cream uppercase group-hover:text-lime">{coach.name}</h3>
 						<p class="mt-1 text-sm text-lime">{coach.role}</p>

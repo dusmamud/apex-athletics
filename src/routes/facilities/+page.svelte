@@ -2,6 +2,7 @@
 	import { Check, Dumbbell } from '@lucide/svelte';
 	import { reveal } from '#lib/reveal';
 	import { facilities } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 </script>
 
 <svelte:head>
@@ -23,7 +24,16 @@
 		{#each facilities as zone, i (zone.name)}
 			<article class="card min-w-0 overflow-hidden" use:reveal={{ delay: (i % 2) * 90 }}>
 				<div class="overflow-hidden">
-					<img src={zone.image} alt={zone.name} width="1200" height="800" loading="lazy" class="aspect-[16/9] w-full object-cover transition duration-300 hover:scale-105" />
+					<img
+						src={zone.image}
+						srcset={imgSrcSet(zone.image, [640, 960, 1200])}
+						sizes="(max-width: 1024px) 100vw, 50vw"
+						alt={zone.name}
+						width="1200"
+						height="800"
+						loading="lazy"
+						class="aspect-[16/9] w-full object-cover transition duration-300 hover:scale-105"
+					/>
 				</div>
 				<div class="p-6">
 					<h2 class="font-display flex items-center gap-2 text-2xl font-semibold tracking-wide text-cream uppercase">

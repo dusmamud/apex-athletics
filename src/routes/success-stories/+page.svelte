@@ -2,6 +2,7 @@
 	import { Quote } from '@lucide/svelte';
 	import { reveal } from '#lib/reveal';
 	import { successStories } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 </script>
 
 <svelte:head>
@@ -27,6 +28,8 @@
 			<article class="card min-w-0 overflow-hidden" use:reveal={{ delay: (i % 2) * 70 }}>
 				<img
 					src={story.image}
+					srcset={imgSrcSet(story.image, [480, 800, 1000])}
+					sizes="(max-width: 768px) 100vw, 50vw"
 					alt="{story.name} training at APEX ATHLETICS"
 					width="1000"
 					height="667"

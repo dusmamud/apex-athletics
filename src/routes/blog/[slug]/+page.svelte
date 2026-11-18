@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { Clock } from '@lucide/svelte';
 	import type { PageData } from './$types';
+	import { imgSrcSet } from '#lib/img';
 
 	let { data }: { data: PageData } = $props();
 	const post = $derived(data.post);
 	const others = $derived(data.others);
 </script>
 
+<!-- Open Graph + article:published_time for this post are set in +layout.svelte
+     from the same post data, so they are not duplicated here. -->
 <svelte:head>
 	<title>{post.title} — APEX ATHLETICS Blog</title>
 	<meta name="description" content={post.excerpt} />
-	<meta property="og:type" content="article" />
-	<meta property="og:title" content={post.title} />
-	<meta property="og:description" content={post.excerpt} />
 </svelte:head>
 
 <article class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -33,9 +33,12 @@
 	</p>
 	<img
 		src={post.image}
+		srcset={imgSrcSet(post.image, [640, 960, 1200])}
+		sizes="(max-width: 768px) 100vw, 768px"
 		alt={post.title}
 		width="1200"
 		height="800"
+		fetchpriority="high"
 		class="mt-8 aspect-[16/9] w-full rounded-2xl border border-line object-cover"
 	/>
 	<div class="mt-8 space-y-5 text-base leading-relaxed text-cream/85">
@@ -57,7 +60,16 @@
 		<div class="mt-6 grid gap-5 sm:grid-cols-2">
 			{#each others as other (other.slug)}
 				<a href="/blog/{other.slug}" class="card group block min-w-0 overflow-hidden">
-					<img src={other.image} alt={other.title} width="1200" height="800" loading="lazy" class="aspect-[16/9] w-full object-cover transition duration-500 group-hover:scale-105" />
+					<img
+						src={other.image}
+						srcset={imgSrcSet(other.image, [480, 800, 1200])}
+						sizes="(max-width: 640px) 100vw, 50vw"
+						alt={other.title}
+						width="1200"
+						height="800"
+						loading="lazy"
+						class="aspect-[16/9] w-full object-cover transition duration-500 group-hover:scale-105"
+					/>
 					<div class="p-5">
 						<h3 class="font-display text-lg leading-tight font-semibold tracking-wide text-cream uppercase group-hover:text-lime">{other.title}</h3>
 						<p class="mt-1 text-xs text-muted">{other.date} · {other.readTime}</p>

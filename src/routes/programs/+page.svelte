@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { reveal } from '#lib/reveal';
 	import { programs } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 </script>
 
 <svelte:head>
@@ -26,6 +27,8 @@
 			<article class="card flex min-w-0 flex-col overflow-hidden sm:flex-row" use:reveal={{ delay: i * 60 }}>
 				<img
 					src={program.image}
+					srcset={imgSrcSet(program.image, [480, 800, 1200])}
+					sizes="(max-width: 640px) 100vw, 224px"
 					alt="{program.name} at APEX ATHLETICS"
 					width="1200"
 					height="800"

@@ -2,6 +2,7 @@
 	import { ChevronLeft, ChevronRight, X } from '@lucide/svelte';
 	import { reveal } from '#lib/reveal';
 	import { galleryImages, type GalleryImage } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 
 	const categories = ['All', 'Strength', 'Classes', 'Cardio', 'Functional', 'Mobility', 'Community'] as const;
 	let filter = $state<(typeof categories)[number]>('All');
@@ -69,7 +70,16 @@
 				use:reveal={{ delay: (i % 3) * 90 }}
 				aria-label="View photo: {img.caption}"
 			>
-				<img src={img.image} alt={img.caption} width="1200" height="800" loading="lazy" class="aspect-[4/3] w-full object-cover transition duration-300 group-hover:scale-105" />
+				<img
+					src={img.image}
+					srcset={imgSrcSet(img.image, [480, 800, 1200])}
+					sizes="(max-width: 1024px) 50vw, 33vw"
+					alt={img.caption}
+					width="1200"
+					height="800"
+					loading="lazy"
+					class="aspect-[4/3] w-full object-cover transition duration-300 group-hover:scale-105"
+				/>
 				<span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-3 pt-8 pb-3 text-xs font-semibold text-cream">
 					{img.caption}
 				</span>
@@ -91,7 +101,15 @@
 		<button type="button" onclick={() => step(-1)} aria-label="Previous photo" class="absolute left-2 flex h-11 w-11 items-center justify-center rounded-md border border-line bg-panel text-cream transition hover:border-lime hover:text-lime sm:left-6">
 			<ChevronLeft class="h-5 w-5" />
 		</button>
-		<img src={galleryImages[selected].image} alt={galleryImages[selected].caption} class="max-h-[80vh] w-auto max-w-full rounded-xl border border-line object-contain" />
+		<img
+			src={galleryImages[selected].image}
+			srcset={imgSrcSet(galleryImages[selected].image, [800, 1200, 1600])}
+			sizes="100vw"
+			alt={galleryImages[selected].caption}
+			width="1200"
+			height="800"
+			class="max-h-[80vh] w-auto max-w-full rounded-xl border border-line object-contain"
+		/>
 		<button type="button" onclick={() => step(1)} aria-label="Next photo" class="absolute right-2 flex h-11 w-11 items-center justify-center rounded-md border border-line bg-panel text-cream transition hover:border-lime hover:text-lime sm:right-6">
 			<ChevronRight class="h-5 w-5" />
 		</button>

@@ -28,6 +28,7 @@
 					aria-label="APEX ATHLETICS on Instagram"
 					class="flex h-11 w-11 items-center justify-center rounded-md border border-line text-cream transition hover:border-lime hover:text-lime"
 				>
+					<span class="sr-only">APEX ATHLETICS on Instagram</span>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg>
 				</a>
 				<a
@@ -37,6 +38,7 @@
 					aria-label="APEX ATHLETICS on Facebook"
 					class="flex h-11 w-11 items-center justify-center rounded-md border border-line text-cream transition hover:border-lime hover:text-lime"
 				>
+					<span class="sr-only">APEX ATHLETICS on Facebook</span>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
 				</a>
 				<a
@@ -46,13 +48,16 @@
 					aria-label="APEX ATHLETICS on YouTube"
 					class="flex h-11 w-11 items-center justify-center rounded-md border border-line text-cream transition hover:border-lime hover:text-lime"
 				>
+					<span class="sr-only">APEX ATHLETICS on YouTube</span>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" /><path d="m10 15 5-3-5-3z" /></svg>
 				</a>
 			</div>
 		</div>
 
 		<nav aria-label="Quick links" class="min-w-0">
-			<h3 class="font-display text-sm font-semibold tracking-[0.2em] text-cream uppercase">Quick Links</h3>
+			<!-- Footer headings are h2 (same visual size): on pages with only an h1
+			     above the footer, h3 would skip a heading level. -->
+			<h2 class="font-display text-sm font-semibold tracking-[0.2em] text-cream uppercase">Quick Links</h2>
 			<ul class="mt-4 space-y-1">
 				{#each [{ href: '/about', label: 'About Us' }, { href: '/schedule', label: 'Class Schedule' }, { href: '/classes', label: 'Classes by Goal' }, { href: '/facilities', label: 'Facilities' }, { href: '/gallery', label: 'Photo Gallery' }, { href: '/location', label: 'Location & Hours' }, { href: '/success-stories', label: 'Success Stories' }, { href: '/bmi-calculator', label: 'BMI Calculator' }, { href: '/calculators', label: 'Fitness Calculators' }, { href: '/nutrition', label: 'Nutrition Coaching' }, { href: '/corporate-wellness', label: 'Corporate Wellness' }, { href: '/challenges', label: '30-Day Challenge' }, { href: '/events', label: 'Events' }, { href: '/careers', label: 'Careers' }, { href: '/free-trial', label: 'Free Trial' }, { href: '/book-a-tour', label: 'Book a Tour' }, { href: '/member-login', label: 'Member Login' }, { href: '/blog', label: 'Blog' }, { href: '/faq', label: 'FAQ' }, { href: '/join', label: 'Join the Gym' }, { href: '/contact', label: 'Contact' }] as item (item.href)}
 					<li>
@@ -68,7 +73,7 @@
 		</nav>
 
 		<nav aria-label="Programs" class="min-w-0">
-			<h3 class="font-display text-sm font-semibold tracking-[0.2em] text-cream uppercase">Programs</h3>
+			<h2 class="font-display text-sm font-semibold tracking-[0.2em] text-cream uppercase">Programs</h2>
 			<ul class="mt-4 space-y-1">
 				{#each programs as program (program.slug)}
 					<li>
@@ -94,7 +99,7 @@
 		</nav>
 
 		<div class="min-w-0">
-			<h3 class="font-display text-sm font-semibold tracking-[0.2em] text-cream uppercase">Contact</h3>
+			<h2 class="font-display text-sm font-semibold tracking-[0.2em] text-cream uppercase">Contact</h2>
 			<ul class="mt-4 space-y-3 text-sm text-muted">
 				<!-- Demo contact details — replace with the real gym address, phone and email before launch. -->
 				<li class="flex items-start gap-2">

@@ -4,6 +4,7 @@
 	import CountUp from '#lib/components/CountUp.svelte';
 	import PlanCard from '#lib/components/PlanCard.svelte';
 	import { coaches, IMAGES, plans, programs, testimonials } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 
 	const marquee = ['Strength', 'HIIT', 'Conditioning', 'Community', 'Discipline', 'Results'];
 
@@ -33,6 +34,8 @@
 		<div class="relative min-w-0 overflow-hidden rounded-2xl border border-line">
 			<img
 				src={IMAGES.hero}
+				srcset={imgSrcSet(IMAGES.hero, [640, 960, 1280, 1600])}
+				sizes="(max-width: 1023px) 100vw, 50vw"
 				alt="Athlete performing a kettlebell swing in the APEX ATHLETICS gym"
 				width="1600"
 				height="1067"
@@ -68,7 +71,7 @@
 				</a>
 			</div>
 			<p class="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
-				<span class="flex gap-0.5" aria-label="Rated 4.9 out of 5 stars">
+				<span class="flex gap-0.5" role="img" aria-label="Rated 4.9 out of 5 stars">
 					{#each Array(5) as _, s (s)}
 						<Star class="h-4 w-4 fill-gold text-gold" />
 					{/each}
@@ -135,6 +138,8 @@
 				<div class="overflow-hidden">
 					<img
 						src={program.image}
+						srcset={imgSrcSet(program.image, [480, 800, 1200])}
+						sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
 						alt="{program.name} at APEX ATHLETICS"
 						width="1200"
 						height="800"
@@ -198,6 +203,8 @@
 					<div class="overflow-hidden">
 						<img
 							src={coach.image}
+							srcset={imgSrcSet(coach.image, [480, 800, 1000])}
+							sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
 							alt="Coach {coach.name}"
 							width="1000"
 							height="1000"
@@ -229,6 +236,8 @@
 		<div class="min-w-0 overflow-hidden rounded-2xl border border-line" use:reveal={{ variant: 'left' }}>
 			<img
 				src={IMAGES.community}
+				srcset={imgSrcSet(IMAGES.community, [640, 960, 1400])}
+				sizes="(max-width: 1023px) 100vw, 50vw"
 				alt="Members training together in a group class at APEX ATHLETICS"
 				width="1400"
 				height="933"
@@ -311,7 +320,7 @@
 	>
 		{#key tIndex}
 			<figure>
-				<div class="flex gap-0.5" aria-label="5 out of 5 stars">
+				<div class="flex gap-0.5" role="img" aria-label="5 out of 5 stars">
 					{#each Array(5) as _, s (s)}
 						<Star class="h-4 w-4 fill-gold text-gold" />
 					{/each}

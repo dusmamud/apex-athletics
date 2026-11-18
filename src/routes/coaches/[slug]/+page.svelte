@@ -2,6 +2,7 @@
 	import { BadgeCheck } from '@lucide/svelte';
 	import { reveal } from '#lib/reveal';
 	import type { PageData } from './$types';
+	import { imgSrcSet } from '#lib/img';
 
 	let { data }: { data: PageData } = $props();
 	const coach = $derived(data.coach);
@@ -25,9 +26,12 @@
 		<div class="min-w-0 overflow-hidden rounded-2xl border border-line lg:col-span-2">
 			<img
 				src={coach.image}
+				srcset={imgSrcSet(coach.image, [480, 800, 1000])}
+				sizes="(max-width: 1023px) 100vw, 40vw"
 				alt="Coach {coach.name}"
 				width="1000"
 				height="1000"
+				fetchpriority="high"
 				class="aspect-[4/3] w-full object-cover object-center lg:aspect-[3/3.4]"
 			/>
 		</div>
@@ -61,7 +65,16 @@
 			<div class="mt-6 grid gap-5 sm:grid-cols-2">
 				{#each coachPrograms as program (program.slug)}
 					<a href="/programs/{program.slug}" class="card group flex min-w-0 items-center gap-4 p-4">
-						<img src={program.image} alt={program.name} width="400" height="267" loading="lazy" class="h-20 w-28 shrink-0 rounded-lg object-cover" />
+						<img
+							src={program.image}
+							srcset={imgSrcSet(program.image, [200, 400])}
+							sizes="112px"
+							alt={program.name}
+							width="400"
+							height="267"
+							loading="lazy"
+							class="h-20 w-28 shrink-0 rounded-lg object-cover"
+						/>
 						<span class="min-w-0">
 							<span class="font-display block text-lg font-semibold tracking-wide text-cream uppercase group-hover:text-lime">{program.name}</span>
 							<span class="block text-sm text-muted">{program.tagline}</span>
@@ -77,7 +90,16 @@
 		<div class="mt-6 grid gap-5 sm:grid-cols-2">
 			{#each others as other (other.slug)}
 				<a href="/coaches/{other.slug}" class="card group flex min-w-0 items-center gap-4 p-4">
-					<img src={other.image} alt="Coach {other.name}" width="400" height="400" loading="lazy" class="h-20 w-20 shrink-0 rounded-lg object-cover object-center" />
+					<img
+						src={other.image}
+						srcset={imgSrcSet(other.image, [160, 400])}
+						sizes="80px"
+						alt="Coach {other.name}"
+						width="400"
+						height="400"
+						loading="lazy"
+						class="h-20 w-20 shrink-0 rounded-lg object-cover object-center"
+					/>
 					<span class="min-w-0">
 						<span class="font-display block text-lg font-semibold tracking-wide text-cream uppercase group-hover:text-lime">{other.name}</span>
 						<span class="block text-sm text-muted">{other.role}</span>

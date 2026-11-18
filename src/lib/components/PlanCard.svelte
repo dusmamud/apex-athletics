@@ -19,7 +19,8 @@
 			<Crown class="h-3.5 w-3.5" /> Most Popular
 		</span>
 	{/if}
-	<h3 class="font-display text-xl font-semibold tracking-wide text-cream uppercase">{plan.name}</h3>
+	<!-- Plan name is h2: on /membership it follows the h1 directly, so h3 would skip a heading level. Visual size is unchanged (same classes). -->
+	<h2 class="font-display text-xl font-semibold tracking-wide text-cream uppercase">{plan.name}</h2>
 	<p class="mt-1 text-sm text-muted">{plan.blurb}</p>
 	<p class="mt-5 flex items-baseline gap-1">
 		<span class="font-display text-5xl font-semibold text-cream">

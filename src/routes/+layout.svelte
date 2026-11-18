@@ -1,40 +1,217 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import '../app.css';
 	import type { LayoutProps } from './$types';
 	import Header from '#lib/components/Header.svelte';
 	import { Phone } from '@lucide/svelte';
-import Footer from '#lib/components/Footer.svelte';
+	import Footer from '#lib/components/Footer.svelte';
+	import { IMAGES } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 
 	let { children }: LayoutProps = $props();
 
-	const gymJsonLd = JSON.stringify({
-		'@context': 'https://schema.org',
-		'@type': 'ExerciseGym',
-		name: 'APEX ATHLETICS',
-		description:
-			'Train with purpose. Get stronger every day. Strength training, personal training, HIIT and conditioning with expert coaches.',
-		url: 'https://apex-athletics-gym.pages.dev/',
-		telephone: '+1-212-555-0148',
-		email: 'train@apexathletics.com',
-		address: {
-			'@type': 'PostalAddress',
-			streetAddress: '48 Ironworks Avenue',
-			addressLocality: 'New York',
-			addressRegion: 'NY',
-			postalCode: '10001',
-			addressCountry: 'US'
+	const SITE_URL = 'https://apex-athletics-gym.pages.dev';
+	const SITE_NAME = 'APEX ATHLETICS';
+	const DEFAULT_TITLE = 'APEX ATHLETICS — Strength, HIIT & Conditioning Gym in New York';
+	const DEFAULT_DESCRIPTION =
+		'Train with purpose. Get stronger every day. Strength training, personal training, HIIT and conditioning with expert coaches.';
+
+	// Per-route Open Graph title/description, copied from each page's own
+	// <meta name="description"> so crawlers see the same copy as the page.
+	// Routes not listed here fall back to the site default (still valid OG).
+	const OG_META: Record<string, { title: string; description: string }> = {
+		'/': {
+			title: 'APEX ATHLETICS — Built by Discipline | Gym, Strength, HIIT & Personal Training',
+			description: DEFAULT_DESCRIPTION
 		},
-		openingHours: ['Mo-Sa 05:00-22:00', 'Su 07:00-20:00'],
-		priceRange: '$120 - $250'
+		'/membership': {
+			title: 'Membership Plans — APEX ATHLETICS',
+			description:
+				'APEX ATHLETICS membership: Basic $120, Premium $180, Elite $250 per month. Yearly billing saves 2 months. 7-day free trial, no joining fee.'
+		},
+		'/coaches': {
+			title: 'Meet Our Coaches — APEX ATHLETICS',
+			description:
+				'Meet the APEX ATHLETICS coaching team: Alex Chen, Maria Rodriguez and David Park — certified strength, HIIT and performance coaches.'
+		},
+		'/programs': {
+			title: 'Training Programs — APEX ATHLETICS',
+			description:
+				'Strength training, personal training, HIIT and conditioning at APEX ATHLETICS. Structured programs, small groups, expert coaches.'
+		},
+		'/facilities': {
+			title: 'Facilities & Equipment — APEX ATHLETICS',
+			description:
+				'Inside APEX ATHLETICS: strength floor, cardio zone, functional turf and recovery suite — 6,000 sq ft of equipment in New York.'
+		},
+		'/gallery': {
+			title: 'Photo Gallery — APEX ATHLETICS',
+			description:
+				'Inside APEX ATHLETICS: real photos of the strength floor, classes, cardio zone, turf and recovery suite.'
+		},
+		'/classes': {
+			title: 'Classes by Goal — APEX ATHLETICS',
+			description:
+				'Find the right class for your goal: build strength, lose fat, move better or perform in sport. Every class is coached, every level welcome.'
+		},
+		'/success-stories': {
+			title: 'Success Stories — APEX ATHLETICS',
+			description:
+				'Real transformations from real APEX ATHLETICS members — weight loss, strength gains and first races, with before-and-after numbers.'
+		},
+		'/blog': {
+			title: 'Blog — APEX ATHLETICS',
+			description:
+				'Training, nutrition and conditioning advice from the APEX ATHLETICS coaches — written by the people who coach it every day.'
+		},
+		'/about': {
+			title: 'About APEX ATHLETICS — Our Story, Values & Team',
+			description:
+				'APEX ATHLETICS has helped New York train with purpose for over 15 years. Meet the team, our values and the gym behind 2,400+ members.'
+		}
+	};
+
+	const canonical = $derived(`${SITE_URL}${page.url.pathname}`);
+	const isHome = $derived(page.url.pathname === '/');
+
+	// Dynamic routes pass their entity through load(): blog [slug] -> post,
+	// coaches [slug] -> coach, programs [slug] -> program.
+	const post = $derived(page.data.post);
+	const coach = $derived(page.data.coach);
+	const program = $derived(page.data.program);
+
+	const ogType = $derived(post ? 'article' : 'website');
+	const ogTitle = $derived(
+		post
+			? `${post.title} — APEX ATHLETICS Blog`
+			: coach
+				? `${coach.name} — ${coach.role} | APEX ATHLETICS`
+				: program
+					? `${program.name} — APEX ATHLETICS`
+					: (OG_META[page.url.pathname]?.title ?? DEFAULT_TITLE)
+	);
+	const ogDescription = $derived(
+		post
+			? post.excerpt
+			: coach
+				? `${coach.name}, ${coach.role} at APEX ATHLETICS. ${coach.credentials}.`
+				: program
+					? program.description
+					: (OG_META[page.url.pathname]?.description ?? DEFAULT_DESCRIPTION)
+	);
+	const ogImage = $derived(post?.image ?? coach?.image ?? program?.image ?? IMAGES.hero);
+	const postIsoDate = $derived(post ? new Date(post.date).toISOString() : undefined);
+	const heroSrcSet = imgSrcSet(IMAGES.hero, [640, 960, 1280, 1600]);
+
+	const jsonLd = $derived.by(() => {
+		const graph: Record<string, unknown>[] = [
+			{
+				'@type': 'ExerciseGym',
+				'@id': `${SITE_URL}/#gym`,
+				name: SITE_NAME,
+				description: DEFAULT_DESCRIPTION,
+				url: SITE_URL,
+				image: IMAGES.hero,
+				telephone: '+1-212-555-0148',
+				email: 'train@apexathletics.com',
+				address: {
+					'@type': 'PostalAddress',
+					streetAddress: '48 Ironworks Avenue',
+					addressLocality: 'New York',
+					addressRegion: 'NY',
+					postalCode: '10001',
+					addressCountry: 'US'
+				},
+				// Approximate ZIP-level coordinates for 10001, Manhattan.
+				// "48 Ironworks Avenue" is fictional demo copy, so no exact
+				// street-level coordinate exists for it.
+				geo: { '@type': 'GeoCoordinates', latitude: 40.75431, longitude: -74.00119 },
+				openingHours: ['Mo-Sa 05:00-22:00', 'Su 07:00-20:00'],
+				priceRange: '$120 - $250',
+				aggregateRating: {
+					'@type': 'AggregateRating',
+					ratingValue: 4.9,
+					reviewCount: 2841
+				},
+				sameAs: ['https://instagram.com', 'https://facebook.com', 'https://youtube.com']
+			}
+		];
+
+		if (post) {
+			// Dates come from the post data ('Nov 10, 2026' etc.) — never invented.
+			const isoDate = new Date(post.date).toISOString().slice(0, 10);
+			graph.push({
+				'@type': 'BlogPosting',
+				headline: post.title,
+				description: post.excerpt,
+				image: post.image,
+				datePublished: isoDate,
+				dateModified: isoDate,
+				author: { '@type': 'Person', name: post.author },
+				publisher: { '@type': 'ExerciseGym', '@id': `${SITE_URL}/#gym`, name: SITE_NAME },
+				mainEntityOfPage: { '@type': 'WebPage', '@id': canonical }
+			});
+		}
+
+		if (coach) {
+			graph.push({
+				'@type': 'Person',
+				name: coach.name,
+				jobTitle: coach.role,
+				description: coach.bio[0],
+				image: coach.image,
+				url: canonical,
+				worksFor: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+				hasCredential: coach.credentials
+			});
+		}
+
+		if (program) {
+			const minutes = parseInt(program.duration, 10);
+			graph.push({
+				'@type': 'ExercisePlan',
+				name: program.name,
+				description: program.description,
+				url: canonical,
+				...(Number.isFinite(minutes) ? { activityDuration: `PT${minutes}M` } : {}),
+				activityFrequency: `${program.schedule.length} times per week`,
+				exerciseType: program.name
+			});
+		}
+
+		return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
 	});
 </script>
 
 <svelte:head>
 	<title>APEX ATHLETICS — Built by Discipline | Gym, Strength, HIIT & Personal Training</title>
-	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="APEX ATHLETICS" />
+	<link rel="canonical" href={canonical} />
+	<meta property="og:type" content={ogType} />
+	<meta property="og:site_name" content={SITE_NAME} />
+	<meta property="og:url" content={canonical} />
+	<meta property="og:title" content={ogTitle} />
+	<meta property="og:description" content={ogDescription} />
+	<meta property="og:image" content={ogImage} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={ogTitle} />
+	<meta name="twitter:description" content={ogDescription} />
+	<meta name="twitter:image" content={ogImage} />
+	{#if post && postIsoDate}
+		<meta property="article:published_time" content={postIsoDate} />
+		<meta property="article:author" content={post.author} />
+	{/if}
+	{#if isHome}
+		<!-- Preload the LCP hero image with the same srcset/sizes as the <img> -->
+		<link
+			rel="preload"
+			as="image"
+			imagesrcset={heroSrcSet}
+			imagesizes="(max-width: 1023px) 100vw, 50vw"
+			fetchpriority="high"
+		/>
+	{/if}
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-	{@html `<script type="application/ld+json">${gymJsonLd}</script>`}
+	{@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
 <Header />

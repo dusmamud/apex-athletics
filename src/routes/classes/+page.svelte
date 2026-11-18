@@ -2,6 +2,7 @@
 	import { ArrowRight, Target } from '@lucide/svelte';
 	import { reveal } from '#lib/reveal';
 	import { classGoals, programs } from '#lib/data/gym';
+	import { imgSrcSet } from '#lib/img';
 
 	const programName = (slug: string) => programs.find((p) => p.slug === slug)?.name ?? slug;
 </script>
@@ -25,7 +26,16 @@
 		{#each classGoals as goal, i (goal.goal)}
 			<article class="card min-w-0 overflow-hidden" use:reveal={{ delay: (i % 2) * 90 }}>
 				<div class="overflow-hidden">
-					<img src={goal.image} alt={goal.goal} width="1200" height="800" loading="lazy" class="aspect-[16/9] w-full object-cover transition duration-300 hover:scale-105" />
+					<img
+						src={goal.image}
+						srcset={imgSrcSet(goal.image, [480, 800, 1200])}
+						sizes="(max-width: 640px) 100vw, 50vw"
+						alt={goal.goal}
+						width="1200"
+						height="800"
+						loading="lazy"
+						class="aspect-[16/9] w-full object-cover transition duration-300 hover:scale-105"
+					/>
 				</div>
 				<div class="p-6">
 					<h2 class="font-display flex items-center gap-2 text-2xl font-semibold tracking-wide text-cream uppercase">
