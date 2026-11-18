@@ -77,7 +77,8 @@
 					alt={img.caption}
 					width="1200"
 					height="800"
-					loading="lazy"
+					loading={i === 0 ? 'eager' : 'lazy'}
+					fetchpriority={i === 0 ? 'high' : undefined}
 					class="aspect-[4/3] w-full object-cover transition duration-300 group-hover:scale-105"
 				/>
 				<span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-3 pt-8 pb-3 text-xs font-semibold text-cream">

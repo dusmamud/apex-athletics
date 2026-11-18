@@ -32,7 +32,8 @@
 					alt="{program.name} at APEX ATHLETICS"
 					width="1200"
 					height="800"
-					loading="lazy"
+					loading={i === 0 ? 'eager' : 'lazy'}
+					fetchpriority={i === 0 ? 'high' : undefined}
 					class="aspect-[16/9] w-full object-cover sm:aspect-auto sm:w-56 sm:shrink-0"
 				/>
 				<div class="flex min-w-0 flex-1 flex-col p-6">

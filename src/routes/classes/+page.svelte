@@ -33,7 +33,8 @@
 						alt={goal.goal}
 						width="1200"
 						height="800"
-						loading="lazy"
+						loading={i === 0 ? 'eager' : 'lazy'}
+						fetchpriority={i === 0 ? 'high' : undefined}
 						class="aspect-[16/9] w-full object-cover transition duration-300 hover:scale-105"
 					/>
 				</div>

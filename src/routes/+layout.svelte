@@ -210,9 +210,9 @@
 	<link rel="canonical" href={canonical} />
 	<!-- Preload the critical font files so the FOUT swap happens earlier and
 	     shifts less (Oswald 600 = display headings, Inter 400/700 = body + bold). -->
-	<link rel="preload" href={oswald600Url} as="font" type="font/woff2" crossorigin />
-	<link rel="preload" href={inter400Url} as="font" type="font/woff2" crossorigin />
-	<link rel="preload" href={inter700Url} as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href={oswald600Url} as="font" type="font/woff2" crossorigin="anonymous" />
+	<link rel="preload" href={inter400Url} as="font" type="font/woff2" crossorigin="anonymous" />
+	<link rel="preload" href={inter700Url} as="font" type="font/woff2" crossorigin="anonymous" />
 	<meta property="og:type" content={ogType} />
 	<meta property="og:site_name" content={SITE_NAME} />
 	<meta property="og:url" content={canonical} />

@@ -33,7 +33,8 @@
 					alt="{story.name} training at APEX ATHLETICS"
 					width="1000"
 					height="667"
-					loading="lazy"
+					loading={i === 0 ? 'eager' : 'lazy'}
+					fetchpriority={i === 0 ? 'high' : undefined}
 					class="aspect-[16/9] w-full object-cover"
 				/>
 				<div class="p-6">

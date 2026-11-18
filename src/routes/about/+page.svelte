@@ -64,7 +64,7 @@
 				alt="Inside the APEX ATHLETICS gym"
 				width="1400"
 				height="933"
-				loading="lazy"
+				fetchpriority="high"
 				class="aspect-[3/2] w-full object-cover"
 			/>
 		</div>

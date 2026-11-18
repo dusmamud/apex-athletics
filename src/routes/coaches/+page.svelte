@@ -32,7 +32,8 @@
 					alt="Coach {coach.name}"
 					width="1000"
 					height="1000"
-					loading="lazy"
+					loading={i === 0 ? 'eager' : 'lazy'}
+					fetchpriority={i === 0 ? 'high' : undefined}
 					class="aspect-[4/3] w-full object-cover object-center transition duration-500 group-hover:scale-105"
 				/>
 				<div class="p-6">
