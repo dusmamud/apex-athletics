@@ -27,7 +27,7 @@
 			<img
 				src={coach.image}
 				srcset={imgSrcSet(coach.image, [480, 800, 1000])}
-				sizes="(max-width: 1023px) 100vw, 40vw"
+				sizes="(max-width: 1023px) calc(100vw - 2rem), 467px"
 				alt="Coach {coach.name}"
 				width="1000"
 				height="1000"

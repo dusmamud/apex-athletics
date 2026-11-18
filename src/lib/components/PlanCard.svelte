@@ -43,5 +43,11 @@
 			</li>
 		{/each}
 	</ul>
-	<a href="/join?plan={plan.name.toLowerCase()}" class="btn-lime mt-7 w-full">Select Plan</a>
+	<!-- Distinct accessible name per plan: the three "Select Plan" links point to
+	     different /join?plan= URLs, and Lighthouse flags identical link text to
+	     different destinations. The plan name is real (visually hidden) text so the
+	     visible label stays exactly "Select Plan". -->
+	<a href="/join?plan={plan.name.toLowerCase()}" class="btn-lime mt-7 w-full"
+		>Select Plan <span class="sr-only">— {plan.name}</span></a
+	>
 </article>

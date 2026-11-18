@@ -35,7 +35,7 @@
 			<img
 				src={IMAGES.hero}
 				srcset={imgSrcSet(IMAGES.hero, [640, 960, 1280, 1600])}
-				sizes="(max-width: 1023px) 100vw, 50vw"
+				sizes="(max-width: 1023px) calc(100vw - 2rem), 584px"
 				alt="Athlete performing a kettlebell swing in the APEX ATHLETICS gym"
 				width="1600"
 				height="1067"
@@ -138,8 +138,8 @@
 				<div class="overflow-hidden">
 					<img
 						src={program.image}
-						srcset={imgSrcSet(program.image, [480, 800, 1200])}
-						sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+						srcset={imgSrcSet(program.image, [320, 480, 800, 960, 1200])}
+						sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 1024px) calc(50vw - 2.5rem), 289px"
 						alt="{program.name} at APEX ATHLETICS"
 						width="1200"
 						height="800"
@@ -155,12 +155,12 @@
 					<p class="mt-3 text-xs font-semibold text-lime">
 						{program.duration} · {program.level} · {program.calories}
 					</p>
-					<a
-						href="/programs/{program.slug}"
-						class="btn-lime mt-4 w-full !py-2.5 text-xs"
-						aria-label="Learn more about {program.name}"
-					>
-						Learn More
+					<!-- Descriptive link text for Lighthouse's SEO audit: it reads the
+					     link's rendered innerText and ignores aria-label, so the program
+					     name is real (visually hidden) text inside the link. The visible
+					     label stays exactly "Learn More". -->
+					<a href="/programs/{program.slug}" class="btn-lime mt-4 w-full !py-2.5 text-xs">
+						Learn More <span class="sr-only">about {program.name}</span>
 					</a>
 				</div>
 			</article>
@@ -203,8 +203,8 @@
 					<div class="overflow-hidden">
 						<img
 							src={coach.image}
-							srcset={imgSrcSet(coach.image, [480, 800, 1000])}
-							sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+							srcset={imgSrcSet(coach.image, [400, 480, 800, 1000])}
+							sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1024px) calc(50vw - 2.5rem), 392px"
 							alt="Coach {coach.name}"
 							width="1000"
 							height="1000"
@@ -237,7 +237,7 @@
 			<img
 				src={IMAGES.community}
 				srcset={imgSrcSet(IMAGES.community, [640, 960, 1400])}
-				sizes="(max-width: 1023px) 100vw, 50vw"
+				sizes="(max-width: 1023px) calc(100vw - 2rem), 584px"
 				alt="Members training together in a group class at APEX ATHLETICS"
 				width="1400"
 				height="933"

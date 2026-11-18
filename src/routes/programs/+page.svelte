@@ -27,8 +27,8 @@
 			<article class="card flex min-w-0 flex-col overflow-hidden sm:flex-row" use:reveal={{ delay: i * 60 }}>
 				<img
 					src={program.image}
-					srcset={imgSrcSet(program.image, [480, 800, 1200])}
-					sizes="(max-width: 640px) 100vw, 224px"
+					srcset={imgSrcSet(program.image, [320, 480, 800, 960, 1200])}
+					sizes="(max-width: 640px) calc(100vw - 2rem), 224px"
 					alt="{program.name} at APEX ATHLETICS"
 					width="1200"
 					height="800"
@@ -44,7 +44,11 @@
 					<p class="mt-3 text-xs font-semibold text-cream/80">
 						{program.duration} · {program.level} · {program.calories} · Coach {program.coach}
 					</p>
-					<a href="/programs/{program.slug}" class="btn-lime mt-5 w-full sm:w-auto">Learn More</a>
+					<!-- See home page: Lighthouse's SEO audit reads rendered innerText, not
+					     aria-label, so the program name is real (visually hidden) text. -->
+					<a href="/programs/{program.slug}" class="btn-lime mt-5 w-full sm:w-auto"
+						>Learn More <span class="sr-only">about {program.name}</span></a
+					>
 				</div>
 			</article>
 		{/each}

@@ -27,8 +27,8 @@
 			<a href="/coaches/{coach.slug}" class="card group block min-w-0 overflow-hidden" use:reveal={{ delay: i * 70 }}>
 				<img
 					src={coach.image}
-					srcset={imgSrcSet(coach.image, [480, 800, 1000])}
-					sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+					srcset={imgSrcSet(coach.image, [400, 480, 800, 1000])}
+					sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1024px) calc(50vw - 2.5rem), 392px"
 					alt="Coach {coach.name}"
 					width="1000"
 					height="1000"

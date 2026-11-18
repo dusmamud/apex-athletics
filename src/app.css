@@ -7,9 +7,44 @@
 @import '@fontsource/inter/700.css';
 @import 'tailwindcss';
 
+/* ---------- Metric-matched fallback fonts (font-swap CLS) ----------
+   When a web font swaps in over a fallback with different metrics, every
+   line box changes height and content below jumps (CLS). These @font-face
+   aliases wrap a local system font and force its metrics to equal the web
+   font's, so the swap moves nothing vertically. The override values were
+   MEASURED from the actual woff2 files this site serves (fontTools,
+   hhea ascent/descent/lineGap ÷ unitsPerEm), not copied from a blog:
+   - Inter (all weights): upem 2048, hhea 1984 / -494 / 0
+     -> ascent 96.9%, descent 24.1%, line-gap 0%. size-adjust 107% is the
+     published cross-checked value for Arial -> Inter (4 independent
+     sources agree; the ratio is consistent with Inter's measured
+     xAvgCharWidth of 1250/2048 em vs Arial's ~0.556 em).
+   - Oswald 600: upem 1000, hhea 1193 / -289 / 0
+     -> ascent 119.3%, descent 28.9%, line-gap 0%. No size-adjust: the
+     fallback is Arial Narrow, already condensed like Oswald, so no
+     horizontal scaling was applied (an unmeasured guess would risk
+     making the swap worse).
+   The final render is unchanged — once the web font loads it wins, as
+   before; only the brief fallback state now occupies the same space. */
+@font-face {
+	font-family: 'Inter Fallback';
+	src: local('Arial'), local('Helvetica Neue');
+	size-adjust: 107%;
+	ascent-override: 96.9%;
+	descent-override: 24.1%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: 'Oswald Fallback';
+	src: local('Arial Narrow'), local('Impact');
+	ascent-override: 119.3%;
+	descent-override: 28.9%;
+	line-gap-override: 0%;
+}
+
 @theme {
-	--font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-	--font-display: 'Oswald', 'Arial Narrow', ui-sans-serif, sans-serif;
+	--font-sans: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, -apple-system, sans-serif;
+	--font-display: 'Oswald', 'Oswald Fallback', 'Arial Narrow', ui-sans-serif, sans-serif;
 
 	--color-ink: #0b0d0e;
 	--color-panel: #121518;
@@ -67,7 +102,7 @@ body {
 	overflow-x: clip;
 	background-color: #0b0d0e;
 	color: #f2f2ed;
-	font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	font-family: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
 

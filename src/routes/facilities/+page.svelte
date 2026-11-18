@@ -27,7 +27,7 @@
 					<img
 						src={zone.image}
 						srcset={imgSrcSet(zone.image, [640, 960, 1200])}
-						sizes="(max-width: 1024px) 100vw, 50vw"
+						sizes="(max-width: 1024px) calc(100vw - 2rem), 596px"
 						alt={zone.name}
 						width="1200"
 						height="800"

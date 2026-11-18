@@ -5,8 +5,15 @@
 	import Header from '#lib/components/Header.svelte';
 	import { Phone } from '@lucide/svelte';
 	import Footer from '#lib/components/Footer.svelte';
-	import { IMAGES } from '#lib/data/gym';
+	import { coaches, IMAGES } from '#lib/data/gym';
 	import { imgSrcSet } from '#lib/img';
+
+	// Preload the critical font files (the same woff2 files the inlined
+	// @font-face rules reference — Vite resolves the hashed URLs, so the
+	// preload href always matches the @font-face src exactly).
+	import oswald600Url from '@fontsource/oswald/files/oswald-latin-600-normal.woff2?url';
+	import inter400Url from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+	import inter700Url from '@fontsource/inter/files/inter-latin-700-normal.woff2?url';
 
 	let { children }: LayoutProps = $props();
 
@@ -100,7 +107,20 @@
 					: (OG_META[page.url.pathname]?.description ?? DEFAULT_DESCRIPTION)
 	);
 	const ogImage = $derived(post?.image ?? coach?.image ?? program?.image ?? IMAGES.hero);
-	const postIsoDate = $derived(post ? new Date(post.date).toISOString() : undefined);
+	// Blog post dates are publication dates in New York (Oct/Nov = EST, -05:00).
+	// Rich Results Test rejects date-only values ("Invalid datetime value" +
+	// "missing timezone"), so emit a full ISO datetime with the offset. The dates
+	// themselves come from the post data — only the time + offset are added.
+	const postDateTime = $derived.by(() => {
+		if (!post) return undefined;
+		const d = new Date(post.date);
+		const pad = (n: number) => String(n).padStart(2, '0');
+		return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T09:00:00-05:00`;
+	});
+	// Author profile URL for the BlogPosting author — only when the author is a
+	// coach with a page; otherwise the url is omitted, never invented.
+	const authorCoach = $derived(post ? coaches.find((c) => c.name === post.author) : undefined);
+	const authorUrl = $derived(authorCoach ? `${SITE_URL}/coaches/${authorCoach.slug}` : undefined);
 	const heroSrcSet = imgSrcSet(IMAGES.hero, [640, 960, 1280, 1600]);
 
 	const jsonLd = $derived.by(() => {
@@ -137,17 +157,19 @@
 			}
 		];
 
-		if (post) {
-			// Dates come from the post data ('Nov 10, 2026' etc.) — never invented.
-			const isoDate = new Date(post.date).toISOString().slice(0, 10);
+		if (post && postDateTime) {
 			graph.push({
 				'@type': 'BlogPosting',
 				headline: post.title,
 				description: post.excerpt,
 				image: post.image,
-				datePublished: isoDate,
-				dateModified: isoDate,
-				author: { '@type': 'Person', name: post.author },
+				datePublished: postDateTime,
+				dateModified: postDateTime,
+				author: {
+					'@type': 'Person',
+					name: post.author,
+					...(authorUrl ? { url: authorUrl } : {})
+				},
 				publisher: { '@type': 'ExerciseGym', '@id': `${SITE_URL}/#gym`, name: SITE_NAME },
 				mainEntityOfPage: { '@type': 'WebPage', '@id': canonical }
 			});
@@ -186,6 +208,11 @@
 <svelte:head>
 	<title>APEX ATHLETICS — Built by Discipline | Gym, Strength, HIIT & Personal Training</title>
 	<link rel="canonical" href={canonical} />
+	<!-- Preload the critical font files so the FOUT swap happens earlier and
+	     shifts less (Oswald 600 = display headings, Inter 400/700 = body + bold). -->
+	<link rel="preload" href={oswald600Url} as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href={inter400Url} as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href={inter700Url} as="font" type="font/woff2" crossorigin />
 	<meta property="og:type" content={ogType} />
 	<meta property="og:site_name" content={SITE_NAME} />
 	<meta property="og:url" content={canonical} />
@@ -196,8 +223,9 @@
 	<meta name="twitter:title" content={ogTitle} />
 	<meta name="twitter:description" content={ogDescription} />
 	<meta name="twitter:image" content={ogImage} />
-	{#if post && postIsoDate}
-		<meta property="article:published_time" content={postIsoDate} />
+	{#if post && postDateTime}
+		<meta property="article:published_time" content={postDateTime} />
+		<meta property="article:modified_time" content={postDateTime} />
 		<meta property="article:author" content={post.author} />
 	{/if}
 	{#if isHome}
@@ -206,7 +234,7 @@
 			rel="preload"
 			as="image"
 			imagesrcset={heroSrcSet}
-			imagesizes="(max-width: 1023px) 100vw, 50vw"
+			imagesizes="(max-width: 1023px) calc(100vw - 2rem), 584px"
 			fetchpriority="high"
 		/>
 	{/if}
